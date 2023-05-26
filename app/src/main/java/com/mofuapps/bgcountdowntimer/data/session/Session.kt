@@ -14,7 +14,7 @@ data class Session(
         return state == SessionState.RUNNING
     }
 
-    private fun durationMillis(): Long {
+    fun durationMillis(): Long {
         return durationSec.toLong() * 1000L
     }
 
