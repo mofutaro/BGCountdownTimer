@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.flow
 class StubSessionRepository(): SessionRepository {
     override val flow: Flow<Session?>
         get() = flow {}
-    override fun insert(session: Session) {}
-    override fun update(session: Session) {}
-    override fun delete(session: Session) {}
+
+    override suspend fun find(): Session? { return null }
+    override suspend fun insert(session: Session) {}
+    override suspend fun update(session: Session) {}
+    override suspend fun delete(session: Session) {}
 }
