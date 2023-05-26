@@ -4,10 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SessionRepository {
     val flow: Flow<Session?>
-
-    fun insert(session: Session)
-
-    fun update(session: Session)
-
-    fun delete(session: Session)
+    suspend fun insert(session: Session)
+    suspend fun update(session: Session)
+    suspend fun delete(session: Session)
 }
