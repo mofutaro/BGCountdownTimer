@@ -1,4 +1,4 @@
-package com.mofuapps.bgcountdowntimer.data.session
+package com.mofuapps.bgcountdowntimer.domain.session
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

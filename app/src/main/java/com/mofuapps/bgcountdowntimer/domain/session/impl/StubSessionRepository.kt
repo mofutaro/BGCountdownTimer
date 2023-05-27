@@ -1,7 +1,7 @@
-package com.mofuapps.bgcountdowntimer.data.session.impl
+package com.mofuapps.bgcountdowntimer.domain.session.impl
 
-import com.mofuapps.bgcountdowntimer.data.session.Session
-import com.mofuapps.bgcountdowntimer.data.session.SessionRepository
+import com.mofuapps.bgcountdowntimer.domain.session.Session
+import com.mofuapps.bgcountdowntimer.domain.session.SessionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

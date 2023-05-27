@@ -1,4 +1,4 @@
-package com.mofuapps.bgcountdowntimer.data.session
+package com.mofuapps.bgcountdowntimer.domain.session
 
 import java.util.Date
 import kotlin.math.max
