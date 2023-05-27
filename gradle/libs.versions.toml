@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.0.2"
 androidx-appcompat = "1.6.1"
 androidx-corektx = "1.10.1"
-kotlin = "1.8.20"
+kotlin = "1.8.10"
 compose-compiler = "1.4.2"
 androidx-compose-bom = "2023.01.00"
 androidx-activity-compose = "1.6.1"
