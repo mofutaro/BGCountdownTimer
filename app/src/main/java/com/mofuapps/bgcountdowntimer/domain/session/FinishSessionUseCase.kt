@@ -1,13 +1,11 @@
 package com.mofuapps.bgcountdowntimer.domain.session
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.util.Date
 
 class FinishSessionUseCase(
     private val sessionRepository: SessionRepository
 ) {
-    suspend operator fun invoke() = withContext(Dispatchers.IO) {
+    suspend operator fun invoke() {
         val currentSession: Session? = sessionRepository.find()
         currentSession?.let {
             val updatedSession = it.copy(
