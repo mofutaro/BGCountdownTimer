@@ -1,0 +1,15 @@
+package com.mofuapps.bgcountdowntimer.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+val Purple500 = Color(0xFF622CE0)
+val Purple700 = Color(0xFF441FD1)
+val Yellow500 = Color(0xFFAAE02C)
+val Yellow700 = Color(0xFF92B718)
+
+//val BlueGray900 = Color(0xFF263238)
+val BlueGray800 = Color(0xFF37474F)
+//val BlueGray200 = Color(0xFFB0BEC5)
+val BlueGray50 = Color(0xFFECEFF1)
+
+//val Gray500 = Color(0xFF9E9E9E)
