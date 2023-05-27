@@ -1,6 +1,6 @@
 # BGCountdownTimer
 バックグラウンドでも動作するAndroid用カウントダウンタイマーです。
-Androidアプリ「推し勉」では同様の機能を実装しています。
+本リポジトリではAndroidアプリ「推し勉」のソースコードの一部を再構成して公開しています。
 
 アプリURL: https://play.google.com/store/apps/details?id=dev.jnaka9.motivetimer
 
