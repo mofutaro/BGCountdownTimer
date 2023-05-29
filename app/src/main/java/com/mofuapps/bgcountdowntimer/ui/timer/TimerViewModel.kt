@@ -1,5 +1,6 @@
 package com.mofuapps.bgcountdowntimer.ui.timer
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -35,16 +36,16 @@ class TimerViewModel(
     private val finishSession: FinishSessionUseCase
 ): ViewModel() {
 
-    private val initialDurationSec = 10
+    private val initialDurationSec = 60
 
     private val initialUIState = TimerScreenUIState(
         stage = TimerScreenStage.STAND_BY,
         visualIndicator = 1f,
-        numericalIndicator = "00:00"
+        numericalIndicator = "01:00"
     )
 
     private fun Session.textProgress(): String {
-        val waitingMillis = (durationMillis() - progressMillisAtResumed)
+        val waitingMillis = (durationMillis() - currentProgressMillis())
         val waiting = waitingMillis / 1000 + if (waitingMillis%1000>0) 1 else 0
         val hours = (waiting / 3600).toInt()
         val residue = (waiting % 3600).toInt()
@@ -78,6 +79,7 @@ class TimerViewModel(
             var visualIndicator = initialUIState.visualIndicator
             var numericalIndicator = initialUIState.numericalIndicator
             result?.let { session: Session ->
+                Log.d("session", session.toString())
                 stage = when(session.state) {
                     SessionState.RUNNING -> TimerScreenStage.RUNNING
                     SessionState.PAUSED -> TimerScreenStage.PAUSED
@@ -93,7 +95,7 @@ class TimerViewModel(
                     numericalIndicator = numericalIndicator
                 )
             }
-            if (result != null && result.progressPercent() >= 100) {
+            if (result != null && result.state == SessionState.RUNNING && result.remainingMillis() <= 0) {
                 finishSession()
             }
         }.launchIn(viewModelScope)
