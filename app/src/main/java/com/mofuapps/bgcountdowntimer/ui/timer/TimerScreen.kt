@@ -12,6 +12,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -19,9 +22,28 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.mofuapps.bgcountdowntimer.ui.theme.BGCountdownTimerTheme
 
+@Composable
+fun TimerScreen(timerViewModel: TimerViewModel, modifier: Modifier = Modifier) {
+    val uiState by timerViewModel.uiState.collectAsState()
+    TimerScreen(
+        uiState = uiState,
+        onStartClicked = remember { { timerViewModel.startTimer() } },
+        onPauseClicked = remember { { timerViewModel.pauseTimer() } },
+        onResumeClicked = remember { { timerViewModel.resumeTimer() } },
+        onCancelClicked = remember { { timerViewModel.cancelTimer() } },
+        modifier = modifier
+    )
+}
 
 @Composable
-fun TimerScreen(uiState: TimerScreenUIState, modifier: Modifier = Modifier) {
+fun TimerScreen(
+    uiState: TimerScreenUIState,
+    onStartClicked: () -> Unit,
+    onPauseClicked: () -> Unit,
+    onResumeClicked: () -> Unit,
+    onCancelClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Surface(modifier = modifier) {
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
             //Text(uiState.numericalIndicator)
@@ -29,7 +51,7 @@ fun TimerScreen(uiState: TimerScreenUIState, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.padding(horizontal = 20.dp)) {
                 Button(
-                    onClick = {  },
+                    onClick = onCancelClicked,
                     enabled = uiState.stage != TimerScreenStage.STAND_BY
                 ) {
                     Text("キャンセル")
@@ -37,17 +59,17 @@ fun TimerScreen(uiState: TimerScreenUIState, modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.weight(1f))
                 when (uiState.stage) {
                     TimerScreenStage.STAND_BY -> {
-                        Button(onClick = {  }) {
+                        Button(onClick = onStartClicked) {
                             Text("開始")
                         }
                     }
                     TimerScreenStage.RUNNING -> {
-                        Button(onClick = {  }) {
+                        Button(onClick = onPauseClicked) {
                             Text("一時停止")
                         }
                     }
                     TimerScreenStage.PAUSED -> {
-                        Button(onClick = {  }) {
+                        Button(onClick = onResumeClicked) {
                             Text("再開")
                         }
                     }
@@ -89,6 +111,13 @@ private fun TimerScreenPreview(
     @PreviewParameter(provider = TimerScreenUIStateProvider::class) data: TimerScreenUIState
 ) {
     BGCountdownTimerTheme {
-        TimerScreen(uiState = data, modifier = Modifier.fillMaxSize())
+        TimerScreen(
+            uiState = data,
+            onStartClicked = {},
+            onPauseClicked = {},
+            onResumeClicked = {},
+            onCancelClicked = {},
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
