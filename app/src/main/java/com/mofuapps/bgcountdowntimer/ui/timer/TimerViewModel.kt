@@ -1,7 +1,10 @@
 package com.mofuapps.bgcountdowntimer.ui.timer
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mofuapps.bgcountdowntimer.domain.session.CancelSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.FinishSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.PauseSessionUseCase
@@ -10,6 +13,7 @@ import com.mofuapps.bgcountdowntimer.domain.session.Session
 import com.mofuapps.bgcountdowntimer.domain.session.SessionRepository
 import com.mofuapps.bgcountdowntimer.domain.session.SessionState
 import com.mofuapps.bgcountdowntimer.domain.session.StartSessionUseCase
+import com.mofuapps.bgcountdowntimer.ui.MyApplication
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -125,12 +129,19 @@ class TimerViewModel(
         }
     }
 
-    /*companion object {
+    companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val appContainer = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyApplication).appContainer
-                TimerViewModel()
+                TimerViewModel(
+                    sessionRepository = appContainer.sessionRepository,
+                    startSession = appContainer.startSessionUseCase,
+                    pauseSession = appContainer.pauseSessionUseCase,
+                    resumeSession = appContainer.resumeSessionUseCase,
+                    cancelSession = appContainer.cancelSessionUseCase,
+                    finishSession = appContainer.finishSessionUseCase
+                )
             }
         }
-    }*/
+    }
 }
