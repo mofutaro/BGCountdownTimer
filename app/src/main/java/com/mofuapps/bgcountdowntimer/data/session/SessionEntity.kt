@@ -26,3 +26,13 @@ fun SessionEntity.asDomainModel(): Session {
         state = state
     )
 }
+
+fun Session.asDatabaseModel(): SessionEntity {
+    return SessionEntity(
+        id = 0,
+        durationSec = durationSec,
+        progressMillisAtResumed = progressMillisAtResumed,
+        resumedAt = resumedAt,
+        state = state
+    )
+}
