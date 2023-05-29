@@ -1,9 +1,13 @@
 package com.mofuapps.bgcountdowntimer.ui.timer
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -12,15 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import com.mofuapps.bgcountdowntimer.ui.theme.BGCountdownTimerTheme
 
 
 @Composable
 fun TimerScreen(uiState: TimerScreenUIState, modifier: Modifier = Modifier) {
     Surface(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            Text(uiState.numericalIndicator)
-            Row {
+        Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+            //Text(uiState.numericalIndicator)
+            NumericalIndicator(indicator = uiState.numericalIndicator, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(modifier = Modifier.padding(horizontal = 20.dp)) {
                 Button(
                     onClick = {  },
                     enabled = uiState.stage != TimerScreenStage.STAND_BY
