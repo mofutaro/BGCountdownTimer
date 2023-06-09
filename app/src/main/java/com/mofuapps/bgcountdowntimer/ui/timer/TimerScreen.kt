@@ -13,9 +13,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -69,40 +72,39 @@ fun TimerScreen(
                     Text("キャンセル")
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                when (uiState.stage) {
-                    TimerScreenStage.STAND_BY -> {
-                        Button(
-                            onClick = onStartClicked,
-                            modifier = Modifier.width(buttonWidth)
-                        ) {
-                            Text("開始")
+                var rightButtonLabel by remember { mutableStateOf("") }
+                var rightButtonEnabled by remember { mutableStateOf(true) }
+                var onRightButtonClicked by remember { mutableStateOf({}) }
+                LaunchedEffect(uiState.stage) {
+                    when (uiState.stage) {
+                        TimerScreenStage.STAND_BY -> {
+                            onRightButtonClicked = onStartClicked
+                            rightButtonEnabled = true
+                            rightButtonLabel = "開始"
+                        }
+                        TimerScreenStage.RUNNING -> {
+                            onRightButtonClicked = onPauseClicked
+                            rightButtonEnabled = true
+                            rightButtonLabel = "一時停止"
+                        }
+                        TimerScreenStage.PAUSED -> {
+                            onRightButtonClicked = onResumeClicked
+                            rightButtonEnabled = true
+                            rightButtonLabel = "再開"
+                        }
+                        TimerScreenStage.FINISHED -> {
+                            onRightButtonClicked = onStartClicked
+                            rightButtonEnabled = false
+                            rightButtonLabel = "開始"
                         }
                     }
-                    TimerScreenStage.RUNNING -> {
-                        Button(
-                            onClick = onPauseClicked,
-                            modifier = Modifier.width(buttonWidth)
-                        ) {
-                            Text("一時停止")
-                        }
-                    }
-                    TimerScreenStage.PAUSED -> {
-                        Button(
-                            onClick = onResumeClicked,
-                            modifier = Modifier.width(buttonWidth)
-                        ) {
-                            Text("再開")
-                        }
-                    }
-                    TimerScreenStage.FINISHED -> {
-                        Button(
-                            onClick = onStartClicked,
-                            enabled = false,
-                            modifier = Modifier.width(buttonWidth)
-                        ) {
-                            Text("開始")
-                        }
-                    }
+                }
+                Button(
+                    onClick = onRightButtonClicked,
+                    enabled = rightButtonEnabled,
+                    modifier = Modifier.width(buttonWidth)
+                ) {
+                    Text(rightButtonLabel)
                 }
             }
         }
