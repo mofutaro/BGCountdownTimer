@@ -68,6 +68,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.systemuicontroller)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
