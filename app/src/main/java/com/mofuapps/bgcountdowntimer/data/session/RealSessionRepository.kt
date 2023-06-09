@@ -7,8 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RealSessionRepository(private val sessionDao: SessionDao): SessionRepository {
+@Singleton
+class RealSessionRepository @Inject constructor(private val sessionDao: SessionDao): SessionRepository {
     override val flow: Flow<Session?> = sessionDao.findFlow().transform {
         emit(it?.asDomainModel())
     }.flowOn(Dispatchers.IO)

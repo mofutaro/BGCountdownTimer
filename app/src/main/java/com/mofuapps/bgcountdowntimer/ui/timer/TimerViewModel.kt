@@ -2,10 +2,7 @@ package com.mofuapps.bgcountdowntimer.ui.timer
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.mofuapps.bgcountdowntimer.domain.session.CancelSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.FinishSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.PauseSessionUseCase
@@ -14,7 +11,7 @@ import com.mofuapps.bgcountdowntimer.domain.session.Session
 import com.mofuapps.bgcountdowntimer.domain.session.SessionRepository
 import com.mofuapps.bgcountdowntimer.domain.session.SessionState
 import com.mofuapps.bgcountdowntimer.domain.session.StartSessionUseCase
-import com.mofuapps.bgcountdowntimer.ui.MyApplication
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -25,9 +22,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TimerViewModel(
+@HiltViewModel
+class TimerViewModel @Inject constructor(
     sessionRepository: SessionRepository,
     private val startSession: StartSessionUseCase,
     private val pauseSession: PauseSessionUseCase,
@@ -128,22 +127,6 @@ class TimerViewModel(
     internal fun cancelTimer() {
         viewModelScope.launch {
             cancelSession()
-        }
-    }
-
-    companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val appContainer = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as MyApplication).appContainer
-                TimerViewModel(
-                    sessionRepository = appContainer.sessionRepository,
-                    startSession = appContainer.startSessionUseCase,
-                    pauseSession = appContainer.pauseSessionUseCase,
-                    resumeSession = appContainer.resumeSessionUseCase,
-                    cancelSession = appContainer.cancelSessionUseCase,
-                    finishSession = appContainer.finishSessionUseCase
-                )
-            }
         }
     }
 }

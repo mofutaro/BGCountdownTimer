@@ -24,11 +24,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mofuapps.bgcountdowntimer.ui.theme.BGCountdownTimerTheme
 
 @Composable
-fun TimerScreen(modifier: Modifier = Modifier, timerViewModel: TimerViewModel = viewModel(factory = TimerViewModel.Factory)) {
+fun TimerScreen(modifier: Modifier = Modifier, timerViewModel: TimerViewModel = hiltViewModel()) {
     val uiState by timerViewModel.uiState.collectAsState()
     TimerScreen(
         uiState = uiState,

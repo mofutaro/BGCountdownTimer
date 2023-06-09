@@ -1,7 +1,11 @@
 package com.mofuapps.bgcountdowntimer.domain.session
 
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PauseSessionUseCase(
+
+@Singleton
+class PauseSessionUseCase @Inject constructor(
     private val sessionRepository: SessionRepository
 ) {
     suspend operator fun invoke() {
