@@ -3,6 +3,7 @@ package com.mofuapps.bgcountdowntimer.ui.timer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mofuapps.bgcountdowntimer.domain.alarm.SetAlarmUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.CancelSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.FinishSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.PauseSessionUseCase
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -32,10 +34,11 @@ class TimerViewModel @Inject constructor(
     private val pauseSession: PauseSessionUseCase,
     private val resumeSession: ResumeSessionUseCase,
     private val cancelSession: CancelSessionUseCase,
-    private val finishSession: FinishSessionUseCase
+    private val finishSession: FinishSessionUseCase,
+    private val setAlarm: SetAlarmUseCase
 ): ViewModel() {
 
-    private val initialDurationSec = 60
+    private val initialDurationSec = 2
 
     private val initialUIState = TimerScreenUIState(
         stage = TimerScreenStage.STAND_BY,
@@ -107,6 +110,7 @@ class TimerViewModel @Inject constructor(
     internal val uiState = _uiState.asStateFlow()
 
     internal fun startTimer() {
+        setAlarm(Date().time + initialDurationSec * 1000L, "A", false)
         viewModelScope.launch {
             startSession(initialDurationSec)
         }
