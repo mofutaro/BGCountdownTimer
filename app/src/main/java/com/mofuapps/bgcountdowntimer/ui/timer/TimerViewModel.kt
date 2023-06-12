@@ -41,12 +41,12 @@ class TimerViewModel @Inject constructor(
     private val notificationManager: AlarmNotificationManager
 ): ViewModel() {
 
-    private val initialDurationSec = 2
+    private val initialDurationSec = 5
 
     private val initialUIState = TimerScreenUIState(
         stage = TimerScreenStage.STAND_BY,
         visualIndicator = 1f,
-        numericalIndicator = "01:00"
+        numericalIndicator = "00:05"
     )
 
     private fun Session.textProgress(): String {
