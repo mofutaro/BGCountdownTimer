@@ -3,7 +3,8 @@ package com.mofuapps.bgcountdowntimer.ui.timer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mofuapps.bgcountdowntimer.domain.alarm.SetAlarmUseCase
+import com.mofuapps.bgcountdowntimer.domain.alarm.NotifyZeroAlarmManager
+import com.mofuapps.bgcountdowntimer.domain.notification.AlarmNotificationManager
 import com.mofuapps.bgcountdowntimer.domain.session.CancelSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.FinishSessionUseCase
 import com.mofuapps.bgcountdowntimer.domain.session.PauseSessionUseCase
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
@@ -35,7 +37,8 @@ class TimerViewModel @Inject constructor(
     private val resumeSession: ResumeSessionUseCase,
     private val cancelSession: CancelSessionUseCase,
     private val finishSession: FinishSessionUseCase,
-    private val setAlarm: SetAlarmUseCase
+    private val alarmManager: NotifyZeroAlarmManager,
+    private val notificationManager: AlarmNotificationManager
 ): ViewModel() {
 
     private val initialDurationSec = 2
@@ -66,6 +69,19 @@ class TimerViewModel @Inject constructor(
     }
 
     init {
+        sessionRepository.flow.mapLatest { it }.onEach { session ->
+            if (session == null) {
+                notificationManager.stopNotification()
+            }
+            session?.let {
+                when(it.state) {
+                    SessionState.RUNNING -> alarmManager.setAlarm(Date().time + it.remainingMillis(), "A", false)
+                    SessionState.PAUSED -> alarmManager.cancelAlarm()
+                    SessionState.FINISHED -> {}
+                }
+            }
+        }.launchIn(viewModelScope)
+
         val tickFlow: Flow<Session?> = sessionRepository.flow.transformLatest { session: Session? ->
             emit(session)
             if (session != null && session.state == SessionState.RUNNING) {
@@ -110,13 +126,14 @@ class TimerViewModel @Inject constructor(
     internal val uiState = _uiState.asStateFlow()
 
     internal fun startTimer() {
-        setAlarm(Date().time + initialDurationSec * 1000L, "A", false)
+        alarmManager.setAlarm(Date().time + initialDurationSec * 1000L, "A", false)
         viewModelScope.launch {
             startSession(initialDurationSec)
         }
     }
 
     internal fun pauseTimer() {
+        alarmManager.cancelAlarm()
         viewModelScope.launch {
             pauseSession()
         }

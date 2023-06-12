@@ -1,12 +1,10 @@
 package com.mofuapps.bgcountdowntimer.di
 
 import android.content.Context
-import com.mofuapps.bgcountdowntimer.domain.alarm.SetAlarmUseCase
-import com.mofuapps.bgcountdowntimer.domain.notification.StartNotificationUseCase
-import com.mofuapps.bgcountdowntimer.domain.notification.StopNotificationUseCase
-import com.mofuapps.bgcountdowntimer.system.SetAlarmUseCaseImpl
-import com.mofuapps.bgcountdowntimer.system.StartNotificationUseCaseImpl
-import com.mofuapps.bgcountdowntimer.system.StopNotificationUseCaseImpl
+import com.mofuapps.bgcountdowntimer.domain.alarm.NotifyZeroAlarmManager
+import com.mofuapps.bgcountdowntimer.domain.notification.AlarmNotificationManager
+import com.mofuapps.bgcountdowntimer.system.AlarmNotificationManagerImpl
+import com.mofuapps.bgcountdowntimer.system.NotifyZeroAlarmManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,21 +15,16 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SystemModule {
+
     @Singleton
     @Provides
-    fun provideSetAlarmUseCase(@ApplicationContext context: Context): SetAlarmUseCase {
-        return SetAlarmUseCaseImpl(context)
+    fun provideNotifyZeroAlarmManager(@ApplicationContext context: Context): NotifyZeroAlarmManager {
+        return NotifyZeroAlarmManagerImpl(context)
     }
 
     @Singleton
     @Provides
-    fun provideStartNotificationUseCase(@ApplicationContext context: Context): StartNotificationUseCase {
-        return StartNotificationUseCaseImpl(context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideStopNotificationUseCase(@ApplicationContext context: Context): StopNotificationUseCase {
-        return StopNotificationUseCaseImpl(context)
+    fun provideAlarmNotificationManager(@ApplicationContext context: Context): AlarmNotificationManager {
+        return AlarmNotificationManagerImpl(context)
     }
 }
