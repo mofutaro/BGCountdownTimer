@@ -9,7 +9,7 @@ import com.mofuapps.bgcountdowntimer.domain.notification.StartNotificationUseCas
 import javax.inject.Inject
 
 class StartNotificationUseCaseImpl @Inject constructor(private val context: Context): StartNotificationUseCase {
-    override fun invoke(message: String, repeat: Boolean) {
+    override operator fun invoke(message: String, repeat: Boolean) {
         val serviceIntent = Intent(context, NotificationService::class.java)
         serviceIntent.putExtra(KEY_NOTIFICATION_MESSAGE, message)
         serviceIntent.putExtra(KEY_REPEAT_NOTIFICATION, repeat)

@@ -6,7 +6,7 @@ import com.mofuapps.bgcountdowntimer.domain.notification.StopNotificationUseCase
 import javax.inject.Inject
 
 class StopNotificationUseCaseImpl @Inject constructor(private val context: Context): StopNotificationUseCase {
-    override fun invoke() {
+    override operator fun invoke() {
         val serviceIntent = Intent(context, NotificationService::class.java)
         context.stopService(serviceIntent)
     }
